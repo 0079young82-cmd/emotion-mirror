@@ -32,7 +32,6 @@ textarea{width:100%;min-height:130px;padding:14px;background:var(--s1);border:1p
 textarea:focus{outline:none;border-color:var(--bd2)}
 .btn-main{width:100%;padding:15px;margin-top:10px;background:var(--bluebg);border:1px solid var(--bluebd);border-radius:var(--r);color:var(--blue);font-size:14px;cursor:pointer;font-family:inherit;letter-spacing:1px;transition:background .2s}
 .btn-main:hover{background:var(--bluebd)}
-.btn-main:disabled{opacity:.35;cursor:not-allowed}
 .card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:18px;margin-bottom:12px}
 .card.blue{background:var(--bluebg);border-color:var(--bluebd)}
 .card.green{background:var(--greenbg);border-color:var(--greenbd)}
@@ -56,17 +55,16 @@ textarea:focus{outline:none;border-color:var(--bd2)}
 .btn-sm{padding:8px 16px;border:1px solid var(--bd2);border-radius:8px;background:var(--s2);color:var(--t2);font-size:12px;cursor:pointer;font-family:inherit}
 .btn-sm:hover{background:var(--s3)}
 .btn-del{border-color:var(--red);color:var(--red);background:transparent}
-.ri{padding:16px;border:1px solid var(--bd);border-radius:var(--r);margin-bottom:10px;background:var(--s1);cursor:pointer;transition:border-color .2s}
-.ri:hover{border-color:var(--bd2)}
+.ri{padding:16px;border:1px solid var(--bd);border-radius:var(--r);margin-bottom:10px;background:var(--s1);cursor:pointer}
 .ri-date{font-size:10px;color:var(--t3);margin-bottom:6px}
 .ri-em{font-size:15px;font-weight:500;display:flex;align-items:center;gap:8px}
 .ri-sit{font-size:12px;color:var(--t3);margin-top:4px;line-height:1.6}
 .ri-det{display:none;margin-top:14px;border-top:1px solid var(--bd);padding-top:14px}
 .dgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 @media(max-width:400px){.dgrid{grid-template-columns:1fr}}
-.dc{padding:14px;border-radius:var(--r);border:1px solid var(--bd);background:var(--s1);cursor:pointer;transition:background .2s;border-left-width:3px}
+.dc{padding:14px;border-radius:var(--r);border:1px solid var(--bd);background:var(--s1);cursor:pointer;border-left-width:3px}
 .dc:hover{background:var(--s2)}
-.dn{font-size:14px;font-weight:500;margin-bottom:4px}
+.dn{font-size:14px;font-weight:500;margin-bottom:4px;color:var(--t)}
 .dd{font-size:12px;color:var(--t3);line-height:1.6}
 .dx{display:none;margin-top:8px;padding-top:8px;border-top:1px solid var(--bd)}
 .dc.open .dx{display:block}
@@ -74,28 +72,23 @@ textarea:focus{outline:none;border-color:var(--bd2)}
 .br{display:flex;justify-content:space-between;font-size:12px;color:var(--t2);margin-bottom:4px}
 .bb{background:var(--s2);border-radius:4px;height:6px;overflow:hidden}
 .bf{height:6px;border-radius:4px;transition:width .8s}
-.loading{display:flex;gap:8px;justify-content:center;padding:2rem}
-.ld{width:8px;height:8px;border-radius:50%;background:var(--t3);animation:bounce .9s infinite}
-.ld:nth-child(2){animation-delay:.15s}
-.ld:nth-child(3){animation-delay:.3s}
-@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-8px)}}
 .fade-in{animation:fi .5s ease}
 @keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.privacy{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:14px;margin-bottom:16px;font-size:12px;color:var(--t3);line-height:1.8}
+.keyword-btns{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.kbtn{padding:8px 14px;border-radius:20px;border:1px solid var(--bd);background:var(--s1);color:var(--t2);font-size:13px;cursor:pointer;font-family:inherit;transition:all .2s}
+.kbtn:hover,.kbtn.sel{background:var(--bluebg);border-color:var(--bluebd);color:var(--blue)}
+.step-indicator{display:flex;gap:6px;margin-bottom:16px}
+.si{width:8px;height:8px;border-radius:50%;background:var(--bd)}
+.si.on{background:var(--blue)}
+.si.done{background:var(--green)}
 </style>
 </head>
 <body>
 <div class="wrap">
-
 <div class="header">
   <div class="eyebrow">감정 내면 탐색기</div>
   <div class="title">내 감정 거울</div>
-  <div class="subtitle">감정의 이름 · 뿌리 · 수용 · 중재 · 성찰</div>
-</div>
-
-<div class="privacy">
-  🔒 입력한 내용은 분석 후 즉시 삭제되며 서버에 저장되지 않습니다.<br>
-  감정 기록은 이 기기에만 보관됩니다. 이름·직장·환자 정보는 입력하지 마세요.
+  <div class="subtitle">감정의 이름 · 뿌리 · 수용 · 중재 · 성찰 — 누구나 바로 사용</div>
 </div>
 
 <div class="tab-bar">
@@ -106,9 +99,11 @@ textarea:focus{outline:none;border-color:var(--bd2)}
 </div>
 
 <div id="tab-analyze">
-  <div class="slabel">지금 무슨 일이 있었나요?</div>
-  <textarea id="situation" placeholder="오늘 있었던 일, 몸에서 느껴지는 것, 머릿속을 맴도는 장면...&#10;이름·직장명·환자 정보는 제외하고 감정 중심으로 써주세요."></textarea>
-  <button class="btn-main" id="abtn" onclick="startAnalysis()">내 감정 들여다보기</button>
+  <div class="slabel">지금 어떤 감정이 느껴지나요? 키워드를 골라보세요</div>
+  <div class="keyword-btns" id="keyword-area"></div>
+  <div class="slabel" style="margin-top:4px">또는 지금 상황을 자유롭게 써주세요</div>
+  <textarea id="situation" placeholder="오늘 있었던 일, 몸에서 느껴지는 것, 머릿속을 맴도는 장면...&#10;판단 없이 그대로 써주세요."></textarea>
+  <button class="btn-main" onclick="startAnalysis()">내 감정 들여다보기</button>
   <div id="result-area" style="margin-top:16px"></div>
 </div>
 
@@ -127,89 +122,66 @@ textarea:focus{outline:none;border-color:var(--bd2)}
   <div class="slabel">나의 감정 패턴</div>
   <div id="insight-area"></div>
 </div>
-
 </div>
+
 <script>
-const SK='emr_v3';
+const SK='emr_v4';
+
 const EDICT={
   '기본감정':{
-    '기쁨':{c:'#F5C842',root:'내가 원하고 소중히 여기는 것이 충족됨',needs:['성취','연결','즐거움'],body:'가슴이 열리는 느낌, 어깨가 가벼워짐'},
-    '슬픔':{c:'#5B8EC7',root:'소중한 것의 상실 또는 연결의 단절',needs:['애도','위로','이해'],body:'가슴이 무겁고 조여드는 느낌, 눈물이 차오름'},
-    '분노':{c:'#D94F4F',root:'나의 가치·경계·기대가 침범되거나 무시됨',needs:['존중','공정','자율성'],body:'얼굴이 달아오름, 턱이나 주먹에 힘이 들어감'},
-    '두려움':{c:'#8B6BD4',root:'안전·통제·예측 가능성이 위협받음',needs:['안전','확신','보호'],body:'심장이 빨리 뜀, 위장이 조여드는 느낌'},
-    '불안':{c:'#E8923A',root:'미래의 불확실성, 충분하지 않다는 느낌',needs:['확실성','준비','신뢰'],body:'가슴이 답답하고 호흡이 얕아짐'},
-    '수치심':{c:'#8B6347',root:'내 존재 자체가 결함이 있다는 내면의 믿음',needs:['수용','소속','자기가치'],body:'얼굴이 뜨거워짐, 몸이 작아지고 숨고 싶어짐'},
-    '죄책감':{c:'#4A7A4A',root:'나의 행동이 나의 가치관에 어긋났다는 인식',needs:['회복','용서','책임'],body:'명치 부근의 무거움, 속이 쓰린 느낌'},
-    '외로움':{c:'#4A7FB5',root:'진정한 이해·소속·친밀함의 결핍',needs:['연결','이해','소속'],body:'가슴 중앙의 텅 빈 느낌, 몸이 축 처짐'},
+    '기쁨':{c:'#F5C842',root:'내가 원하고 소중히 여기는 것이 충족됨',needs:['성취','연결','즐거움'],body:'가슴이 열리는 느낌, 어깨가 가벼워짐',belief:'나는 행복할 자격이 있다',keywords:['기쁘다','좋다','설렌다','행복하다','즐겁다','신난다'],med:'지금 이 감정을 충분히 느끼세요. 기쁨은 빨리 지나가니 머물러 주세요.',questions:['이 기쁨을 만든 것은 무엇인가요?','이 순간을 어떻게 기억하고 싶나요?','나에게 기쁨을 주는 것이 또 무엇이 있을까요?'],care:'오늘 당신은 충분히 빛나고 있어요.',quotes:['기쁨은 미래가 아니라 지금 이 순간에 있다. — 틱낫한','온전히 살아있다는 증거가 바로 이 기쁨이다.']},
+    '슬픔':{c:'#5B8EC7',root:'소중한 것의 상실 또는 연결의 단절',needs:['애도','위로','이해'],body:'가슴이 무겁고 조여드는 느낌, 눈물이 차오름',belief:'나는 상실을 경험했다',keywords:['슬프다','눈물난다','허탈하다','그립다','아프다','상실'],med:'슬픔을 서두르지 마세요. 울고 싶으면 우세요.',questions:['무엇이 가장 그리운가요?','이 슬픔이 내게 전하는 말은 무엇일까요?','지금 나에게 필요한 위로는 무엇인가요?'],care:'당신의 슬픔은 사랑했다는 증거예요.',quotes:['슬픔은 사랑했다는 증거다. 그 깊이만큼 당신은 연결되어 있었다.','눈물은 약함이 아니라 오랫동안 강했다는 표시다.']},
+    '분노':{c:'#D94F4F',root:'나의 가치·경계·기대가 침범되거나 무시됨',needs:['존중','공정','자율성'],body:'얼굴이 달아오름, 턱이나 주먹에 힘이 들어감',belief:'나의 경계가 무시당했다',keywords:['화난다','짜증난다','억울하다','불공평하다','화가치민다','열받는다'],med:'잠깐 멈추고 깊게 세 번 숨을 쉬세요. 분노 아래 상처나 두려움이 있는지 들여다보세요.',questions:['무엇이 가장 억울한가요?','이 상황에서 내가 원했던 것은 무엇인가요?','분노 아래 어떤 감정이 숨어있을까요?'],care:'당신의 경계는 지킬 가치가 있어요.',quotes:['분노는 "나는 소중하다"는 선언이다.','경계를 지키는 것은 이기심이 아니라 자기존중이다.']},
+    '두려움':{c:'#8B6BD4',root:'안전·통제·예측 가능성이 위협받음',needs:['안전','확신','보호'],body:'심장이 빨리 뜀, 위장이 조여드는 느낌',belief:'지금 내가 위협받고 있다',keywords:['무섭다','두렵다','무서워','겁난다','불안하다','떨린다'],med:'지금 발바닥이 바닥에 닿아있는 것을 느끼세요. 호흡을 느리게 하면 신경계가 안정됩니다.',questions:['지금 실제로 위험한 것은 무엇인가요?','두려움이 나를 보호하려는 것은 무엇인가요?','안전하다고 느끼려면 무엇이 필요한가요?'],care:'지금 이 순간, 당신은 충분히 안전해요.',quotes:['두려움이 있는 곳에 용기가 필요한 곳이 있다.','두려움을 인정하는 것이 두려움을 가장 빨리 통과하는 길이다.']},
+    '불안':{c:'#E8923A',root:'미래의 불확실성, 충분하지 않다는 느낌',needs:['확실성','준비','신뢰'],body:'가슴이 답답하고 호흡이 얕아짐, 손발이 차가워짐',belief:'앞으로 잘 될지 모르겠다',keywords:['불안하다','걱정된다','긴장된다','초조하다','막막하다','답답하다'],med:'5가지 보이는 것, 4가지 만져지는 것을 확인하세요. 지금 이 순간으로 돌아오세요.',questions:['무엇이 가장 걱정되나요?','최악의 상황이 생겨도 내가 할 수 있는 것은?','지금 내가 통제할 수 있는 것은 무엇인가요?'],care:'지금 이 순간 당신은 충분히 잘 하고 있어요.',quotes:['불안은 미래에 살고 있는 나를 현재로 데려오라는 신호다.','지금 이 순간, 당신은 충분히 안전하다.']},
+    '수치심':{c:'#8B6347',root:'내 존재 자체가 결함이 있다는 내면의 믿음',needs:['수용','소속','자기가치'],body:'얼굴이 뜨거워짐, 몸이 작아지고 숨고 싶어짐',belief:'나는 부족한 사람이다',keywords:['창피하다','부끄럽다','민망하다','쪽팔리다','숨고싶다','한심하다'],med:'수치심은 혼자 있을 때 커집니다. 신뢰하는 한 사람에게 나누어보세요.',questions:['이 수치심은 언제부터 있었나요?','어린 나에게도 이렇게 말할 수 있나요?','내가 정말 결함이 있는 건지, 실수를 한 건지 구분해보세요.'],care:'당신은 당신의 실수가 아니에요.',quotes:['수치심은 당신이 나쁜 사람이 아니라 상처받았다는 신호다. — 브레네 브라운','당신은 당신의 실수가 아니다.']},
+    '죄책감':{c:'#4A7A4A',root:'나의 행동이 나의 가치관에 어긋났다는 인식',needs:['회복','용서','책임'],body:'명치 부근의 무거움, 속이 쓰린 느낌',belief:'내가 잘못했다',keywords:['미안하다','죄송하다','후회된다','잘못했다','죄책감','내탓'],med:'무엇을 잘못했는지 명확히 하세요. 할 수 있는 것을 하고 나머지는 내려놓으세요.',questions:['내가 실제로 한 것과 하지 않은 것을 구분해보세요.','지금 내가 할 수 있는 것은 무엇인가요?','나 자신을 용서할 준비가 되어있나요?'],care:'잘못을 아는 것이 이미 성장이에요.',quotes:['잘못을 아는 것이 이미 성장이다. 자책과 책임은 다르다.','스스로를 용서하는 것이 가장 어렵고 가장 중요하다.']},
+    '외로움':{c:'#4A7FB5',root:'진정한 이해·소속·친밀함의 결핍',needs:['연결','이해','소속'],body:'가슴 중앙의 텅 빈 느낌, 몸이 축 처짐',belief:'나는 혼자다',keywords:['외롭다','쓸쓸하다','혼자다','고독하다','아무도없다','공허하다'],med:'지금 당장 연결될 수 있는 가장 작은 방법을 찾아보세요.',questions:['어떤 연결이 그리운가요?','나 자신과는 얼마나 연결되어 있나요?','지금 나에게 손을 내밀 수 있는 사람은 누구인가요?'],care:'당신 자신과 먼저 연결될 때, 진정한 연결이 가능해져요.',quotes:['외로움은 연결을 원한다는 뜻이다. 그 마음이 살아있다는 증거다.','당신 자신과 먼저 연결될 때, 진정한 연결이 가능해진다.']},
   },
   '복합감정':{
-    '번아웃':{c:'#795548',root:'지속적 과부하 + 회복 없음 + 의미 상실의 누적',needs:['휴식','회복','의미'],body:'전신이 납처럼 무거움, 아무것도 하기 싫음'},
-    '억울함':{c:'#C0392B',root:'노력이 보이지 않음, 공정하지 않은 평가를 받음',needs:['인정','공정','이해'],body:'가슴이 막히고 숨이 잘 안 쉬어짐'},
-    '공허함':{c:'#90A4AE',root:'의미·목적·진정한 연결의 부재',needs:['의미','목적','연결'],body:'가슴 속이 텅 비어있는 느낌, 무감각'},
-    '무기력':{c:'#607D8B',root:'통제감 상실, 노력이 소용없다는 학습된 패턴',needs:['자율성','효능감','희망'],body:'몸이 바닥에 가라앉는 느낌'},
-    '과부하':{c:'#E64A19',root:'자원보다 요구가 훨씬 많음',needs:['공간','지원','경계'],body:'머리가 꽉 찬 느낌, 가슴이 조여듦'},
-    '자기비판':{c:'#455A64',root:'완벽주의, 조건부 자기수용',needs:['자기수용','자비','충분함'],body:'어깨가 짓눌리는 느낌'},
-    '억압':{c:'#6D4C41',root:'감정을 느끼면 안 된다는 믿음, 오랜 역할의 요구',needs:['표현','해방','진정성'],body:'목이나 가슴이 막히는 느낌'},
-    '두절감':{c:'#546E7A',root:'자신 또는 타인으로부터 단절된 느낌',needs:['현존','연결','일치'],body:'몸에서 분리된 느낌, 멍한 상태'},
+    '번아웃':{c:'#795548',root:'지속적 과부하 + 회복 없음 + 의미 상실의 누적',needs:['휴식','회복','의미'],body:'전신이 납처럼 무거움, 아무것도 하기 싫음',belief:'더 이상 줄 것이 없다',keywords:['지쳤다','번아웃','소진','아무것도하기싫다','탈진','방전'],med:'지금 당장 무언가를 해결하려 하지 마세요. 몸이 필요한 것 — 잠, 물, 음식, 조용함을 먼저 하세요.',questions:['마지막으로 충분히 쉰 것이 언제인가요?','지금 내 몸이 원하는 것은 무엇인가요?','무엇을 내려놓을 수 있을까요?'],care:'비어있어야 채울 수 있어요. 지금 쉬는 것이 가장 중요한 일이에요.',quotes:['비어있어야 채울 수 있다. 지금 비어있는 당신은 채워질 준비가 된 것이다.','자신을 돌보는 것은 사치가 아니라 지속 가능한 돌봄의 전제조건이다.']},
+    '억울함':{c:'#C0392B',root:'노력이 보이지 않음, 공정하지 않은 평가를 받음',needs:['인정','공정','이해'],body:'가슴이 막히고 숨이 잘 안 쉬어짐',belief:'내 노력이 인정받지 못했다',keywords:['억울하다','불공평하다','인정안받는다','억울해','서럽다','억울'],med:'억울함을 혼자 삼키지 마세요. 글로 쓰거나 신뢰하는 사람에게 말해보세요.',questions:['무엇이 가장 억울한가요?','내 노력을 내가 먼저 인정해줄 수 있나요?','이 상황을 어떻게 바꿀 수 있을까요?'],care:'당신의 노력은 보이지 않더라도 실제로 존재했어요.',quotes:['억울함은 "나는 더 나은 대우를 받을 자격이 있다"는 진실을 담고 있다.','당신의 노력은 보이지 않더라도 존재했다.']},
+    '공허함':{c:'#90A4AE',root:'의미·목적·진정한 연결의 부재',needs:['의미','목적','연결'],body:'가슴 속이 텅 비어있는 느낌, 무감각',belief:'삶에 의미가 없는 것 같다',keywords:['공허하다','허무하다','의미없다','텅빈','무감각','멍하다'],med:'지금 당장 무언가로 채우려 하지 마세요. 공허함과 함께 앉아보세요.',questions:['무엇이 그리운가요?','예전에 의미 있었던 것은 무엇인가요?','지금 가장 작은 의미 있는 행동은 무엇일까요?'],care:'텅 빈 공간이 있어야 새것이 들어올 수 있어요.',quotes:['텅 빈 공간이 있어야 새것이 들어올 수 있다.','공허함은 무언가를 찾고 있다는 신호다.']},
+    '무기력':{c:'#607D8B',root:'통제감 상실, 노력이 소용없다는 학습된 패턴',needs:['자율성','효능감','희망'],body:'몸이 바닥에 가라앉는 느낌, 움직이기 싫음',belief:'해도 소용없다',keywords:['무기력하다','힘없다','의욕없다','아무것도못하겠다','움직이기싫다','무력하다'],med:'아주 작은 것 하나만 하세요. 물 한 잔, 창문 열기. 움직임이 에너지를 만듭니다.',questions:['지금 할 수 있는 가장 작은 것은 무엇인가요?','무기력이 나를 보호하고 있는 것은 무엇일까요?','예전에 힘이 났던 순간은 언제인가요?'],care:'한 발짝도 충분해요. 지금은 숨만 쉬어도 돼요.',quotes:['지금 아무것도 하기 싫다면, 몸이 보내는 긴급 메시지다.','한 발짝도 충분하다. 지금은 숨만 쉬어도 된다.']},
+    '과부하':{c:'#E64A19',root:'자원보다 요구가 훨씬 많음',needs:['공간','지원','경계'],body:'머리가 꽉 찬 느낌, 가슴이 조여듦',belief:'너무 많은 것을 해야 한다',keywords:['너무많다','벅차다','감당안된다','힘들다','쏟아진다','바쁘다'],med:'지금 해야 할 것 중 오늘 안 해도 되는 것을 하나 찾아보세요.',questions:['지금 해야 할 것 중 내려놓을 수 있는 것은?','도움을 요청할 수 있는 사람이 있나요?','가장 중요한 것 딱 하나만 고른다면?'],care:'당신은 기계가 아니에요. 한 번에 하나씩이면 충분해요.',quotes:['모든 것을 혼자 감당해야 한다는 생각, 그것도 내려놓을 수 있다.','아니오는 문장이다. 설명이 필요 없다.']},
+    '자기비판':{c:'#455A64',root:'완벽주의, 조건부 자기수용',needs:['자기수용','자비','충분함'],body:'어깨가 짓눌리는 느낌, 가슴이 답답함',belief:'나는 충분하지 않다',keywords:['못났다','부족하다','왜이럴까','한심하다','내가문제다','자책'],med:'그 목소리가 언제부터 있었는지 생각해보세요. 어린 당신에게 그렇게 말하겠어요?',questions:['그 비판의 목소리는 누구의 것인가요?','친구에게는 어떻게 말해줄 건가요?','내가 잘 하고 있는 것 세 가지는?'],care:'당신은 이미 충분히 좋은 사람이에요.',quotes:['당신이 친구에게 하듯 자신에게도 말해주세요. — 크리스틴 네프','실수는 당신이 배우고 있다는 증거다.']},
   },
   '간호사 특화':{
-    '공감피로':{c:'#AD1457',root:'타인의 고통을 지속적으로 함께 지면서 자기 에너지가 고갈됨',needs:['자기돌봄','회복','경계'],body:'감정이 마비되거나 과민해짐'},
-    '도덕적 고통':{c:'#6A1B9A',root:'옳다고 아는 것을 시스템 때문에 할 수 없을 때',needs:['통합성','정직','의미'],body:'가슴이 조이고 내장이 비틀리는 느낌'},
-    '슈퍼우먼증후군':{c:'#D81B60',root:'모든 역할을 완벽하게 해야 한다는 내면화된 압박',needs:['충분함','허용','쉼'],body:'어깨와 목이 만성적으로 굳어있음'},
-    '사명감소진':{c:'#283593',root:'일을 사랑하지만 더 이상 줄 것이 없는 모순',needs:['의미','경계','재충전'],body:'일하러 가는 것이 무겁게 느껴짐'},
-    '통제욕구':{c:'#E65100',root:'불확실한 환경에서 안전을 유지하려는 과잉적응',needs:['안전','신뢰','내려놓음'],body:'머리가 항상 가득 차 있고 긴장이 풀리지 않음'},
-    '인정갈망':{c:'#1565C0',root:'충분히 인정받지 못했던 경험들의 누적',needs:['인정','가치','보임'],body:'칭찬에 과민하거나 평가가 두려움'},
+    '공감피로':{c:'#AD1457',root:'타인의 고통을 지속적으로 함께 지면서 자기 에너지가 고갈됨',needs:['자기돌봄','회복','경계'],body:'감정이 마비되거나 과민해짐, 퇴근 후에도 일이 머릿속에',belief:'남을 돌보다 내가 사라졌다',keywords:['공감피로','감정노동','다지쳤다','환자생각','감정소진','무뎌졌다'],med:'오늘 누군가의 고통을 내 것처럼 느꼈나요? 이제 그 감정을 몸 밖으로 내보낼 시간입니다.',questions:['오늘 내가 흡수한 감정은 무엇인가요?','나 자신을 위해 마지막으로 한 것은 언제인가요?','지금 내 몸과 마음이 필요한 것은?'],care:'다른 사람을 돌보려면 먼저 자신이 채워져 있어야 해요.',quotes:['다른 사람을 돌보려면 먼저 자신이 채워져 있어야 한다.','당신이 느끼는 지침은 당신이 얼마나 깊이 돌봤는지의 척도다.']},
+    '도덕적 고통':{c:'#6A1B9A',root:'옳다고 아는 것을 시스템 때문에 할 수 없을 때',needs:['통합성','정직','의미'],body:'가슴이 조이고 내장이 비틀리는 느낌',belief:'옳은 것을 할 수 없다',keywords:['도덕적고통','양심','어쩔수없다','시스템','억울하다','죄책감'],med:'당신이 할 수 없었던 것에 죄책감을 느낄 필요 없습니다. 시스템의 문제예요.',questions:['내 가치관과 현실 사이의 간격은 어디에 있나요?','이 상황에서 내가 할 수 있는 가장 작은 것은?','같은 고통을 느끼는 동료가 있나요?'],care:'당신의 고통은 당신의 가치관이 살아있다는 증거예요.',quotes:['당신이 느끼는 고통은 당신의 가치관이 살아있다는 증거다.','옳은 것을 알면서 할 수 없는 고통. 당신이 여전히 인간적이라는 표시다.']},
+    '슈퍼우먼증후군':{c:'#D81B60',root:'모든 역할을 완벽하게 해야 한다는 내면화된 압박',needs:['충분함','허용','쉼'],body:'어깨와 목이 만성적으로 굳어있음, 늘 긴장',belief:'내가 다 해야 한다',keywords:['다해야한다','완벽해야해','간호사엄마아내','역할','쉬면안되','책임감'],med:'오늘 완벽하지 않아도 됩니다. 도움을 요청해보세요.',questions:['지금 내가 하고 있는 역할 중 내려놓을 수 있는 것은?','완벽하지 않아도 괜찮다는 걸 언제 마지막으로 느꼈나요?','도움을 요청하면 무슨 일이 생길까요?'],care:'완벽하지 않아도 충분히 좋은 간호사이고 충분히 좋은 사람이에요.',quotes:['완벽하지 않아도 충분히 좋은 간호사이고 충분히 좋은 사람이다.','도움을 요청하는 것은 약함이 아니라 지혜다.']},
+    '사명감소진':{c:'#283593',root:'일을 사랑하지만 더 이상 줄 것이 없는 모순',needs:['의미','경계','재충전'],body:'일하러 가는 것이 무겁게 느껴짐',belief:'이 일이 더 이상 의미있지 않은 것 같다',keywords:['사명감','의미잃었다','왜하나','일이싫다','초심','이직고민'],med:'당신이 처음 이 일을 시작했던 이유를 기억해보세요.',questions:['처음 이 일을 선택했던 이유는 무엇인가요?','지금 나에게 재충전이 필요한 것은 무엇인가요?','사명감이 아닌 나로서의 나는 누구인가요?'],care:'사명감으로 타오른 사람이 가장 먼저 꺼져요. 불꽃도 기름이 필요해요.',quotes:['사명감으로 타오른 사람이 가장 먼저 꺼진다. 불꽃도 기름이 필요하다.','당신을 소중히 여기는 것이 당신이 돌보는 사람을 소중히 여기는 시작이다.']},
+    '인정갈망':{c:'#1565C0',root:'충분히 인정받지 못했던 경험들의 누적',needs:['인정','가치','보임'],body:'칭찬에 과민하거나 평가가 두려움',belief:'내가 인정받아야 충분하다',keywords:['인정받고싶다','칭찬','평가무섭다','노력해도','알아줘','보이지않는다'],med:'당신이 한 일의 가치를 타인의 평가 없이도 알 수 있어요.',questions:['내가 스스로 인정할 수 있는 오늘의 일은 무엇인가요?','인정이 필요한 이유는 어디서 왔을까요?','나 자신을 가장 잘 아는 사람은 누구인가요?'],care:'당신의 가치는 타인의 인정에 달려있지 않아요.',quotes:['충분히 인정받지 못했던 경험들이 쌓여있어요. 그 마음이 자연스럽습니다.','당신은 이미 충분히 가치 있는 사람이에요.']},
   }
-};
-const QUOTES={
-  '기쁨':['기쁨은 미래가 아니라 지금 이 순간에 있다. — 틱낫한','온전히 살아있다는 증거가 바로 이 기쁨이다.'],
-  '슬픔':['슬픔은 사랑했다는 증거다. 그 깊이만큼 당신은 연결되어 있었다.','눈물은 약함이 아니라 오랫동안 강했다는 표시다.'],
-  '분노':['분노는 "나는 소중하다"는 선언이다. 그 분노를 들어라.','경계를 지키는 것은 이기심이 아니라 자기존중이다.'],
-  '두려움':['두려움이 있는 곳에 용기가 필요한 곳이 있다. 둘은 같이 온다.','두려움을 인정하는 것이 두려움을 가장 빨리 통과하는 길이다.'],
-  '불안':['불안은 미래에 살고 있는 나를 현재로 데려오라는 신호다.','지금 이 순간, 당신은 충분히 안전하다.'],
-  '수치심':['수치심은 당신이 나쁜 사람이 아니라 상처받았다는 신호다. — 브레네 브라운','당신은 당신의 실수가 아니다.'],
-  '죄책감':['잘못을 아는 것이 이미 성장이다. 자책과 책임은 다르다.','스스로를 용서하는 것이 가장 어렵고 가장 중요하다.'],
-  '외로움':['외로움은 연결을 원한다는 뜻이다. 그 마음이 살아있다는 증거다.','당신 자신과 먼저 연결될 때, 진정한 연결이 가능해진다.'],
-  '번아웃':['비어있어야 채울 수 있다. 지금 비어있는 당신은 채워질 준비가 된 것이다.','자신을 돌보는 것은 사치가 아니라 지속 가능한 돌봄의 전제조건이다.'],
-  '억울함':['억울함은 "나는 더 나은 대우를 받을 자격이 있다"는 진실을 담고 있다.','당신의 노력은 보이지 않더라도 존재했다.'],
-  '공허함':['텅 빈 공간이 있어야 새것이 들어올 수 있다.','공허함은 무언가를 찾고 있다는 신호다.'],
-  '무기력':['지금 아무것도 하기 싫다면, 몸이 보내는 긴급 메시지다.','한 발짝도 충분하다. 지금은 숨만 쉬어도 된다.'],
-  '과부하':['모든 것을 혼자 감당해야 한다는 생각, 그것도 내려놓을 수 있다.','아니오는 문장이다. 설명이 필요 없다.'],
-  '자기비판':['당신이 친구에게 하듯 자신에게도 말해주세요. — 크리스틴 네프','실수는 당신이 배우고 있다는 증거다.'],
-  '공감피로':['다른 사람을 돌보려면 먼저 자신이 채워져 있어야 한다.','당신이 느끼는 지침은 당신이 얼마나 깊이 돌봤는지의 척도다.'],
-  '도덕적 고통':['당신이 느끼는 고통은 당신의 가치관이 살아있다는 증거다.','옳은 것을 알면서 할 수 없는 고통. 당신이 여전히 인간적이라는 표시다.'],
-  '슈퍼우먼증후군':['완벽하지 않아도 충분히 좋은 간호사이고 충분히 좋은 사람이다.','도움을 요청하는 것은 약함이 아니라 지혜다.'],
-  '사명감소진':['사명감으로 타오른 사람이 가장 먼저 꺼진다. 불꽃도 기름이 필요하다.','당신을 소중히 여기는 것이 당신이 돌보는 사람을 소중히 여기는 시작이다.'],
-};
-const MED={
-  '기쁨':'지금 이 감정을 충분히 느끼세요. 기쁨은 빨리 지나가니 머물러 주세요.',
-  '슬픔':'슬픔을 서두르지 마세요. 울고 싶으면 우세요. 이 슬픔이 무엇에 대한 것인지 천천히 들여다보세요.',
-  '분노':'잠깐 멈추고 깊게 세 번 숨을 쉬세요. 분노 아래에 상처나 두려움이 있는지 들여다보세요.',
-  '두려움':'지금 발바닥이 바닥에 닿아있는 것을 느끼세요. 호흡을 느리게 하면 신경계가 안정됩니다.',
-  '불안':'5가지 보이는 것, 4가지 만져지는 것을 확인하세요. 지금 이 순간으로 돌아오세요.',
-  '수치심':'수치심은 혼자 있을 때 커집니다. 신뢰하는 한 사람에게 나누어보세요.',
-  '죄책감':'무엇을 잘못했는지 명확히 하세요. 할 수 있는 것을 하고 나머지는 내려놓으세요.',
-  '외로움':'지금 당장 연결될 수 있는 가장 작은 방법을 찾아보세요. 자기 자신과의 연결도 연결입니다.',
-  '번아웃':'지금 당장 무언가를 해결하려 하지 마세요. 몸이 필요한 것을 먼저 하세요 — 잠, 물, 음식, 조용함.',
-  '억울함':'억울함을 혼자 삼키지 마세요. 글로 쓰거나 신뢰하는 사람에게 말해보세요.',
-  '공허함':'지금 당장 무언가로 채우려 하지 마세요. 공허함과 함께 앉아보세요.',
-  '무기력':'아주 작은 것 하나만 하세요. 물 한 잔, 창문 열기. 완벽하지 않아도 됩니다.',
-  '과부하':'지금 해야 할 것 중 오늘 안 해도 되는 것을 하나 찾아보세요. 한 번에 하나씩.',
-  '자기비판':'그 목소리가 언제부터 있었는지 생각해보세요. 어린 당신에게 그렇게 말하겠어요?',
-  '공감피로':'오늘 누군가의 고통을 내 것처럼 느꼈나요? 이제 그 감정을 몸 밖으로 내보낼 시간입니다.',
-  '도덕적 고통':'당신이 할 수 없었던 것에 죄책감을 느낄 필요 없습니다. 당신이 아니라 시스템이 문제입니다.',
-  '슈퍼우먼증후군':'오늘 완벽하지 않아도 됩니다. 도움을 요청해보세요. 당신의 한계는 약함이 아닙니다.',
-  '사명감소진':'당신이 처음 이 일을 시작했던 이유를 기억해보세요. 지금 당신에게 필요한 것은 더 많은 헌신이 아닙니다.',
 };
 
 function gc(n){for(const c of Object.values(EDICT))if(c[n])return c[n].c;return'#888'}
 function gd(n){for(const c of Object.values(EDICT))if(c[n])return c[n];return null}
-function gq(n){const q=QUOTES[n];return q?q[Math.floor(Math.random()*q.length)]:'이 감정과 함께 앉아보세요. 모든 감정은 지나갑니다.'}
-function gm(n){return MED[n]||'이 감정을 판단 없이 바라보세요. 잠시 멈추고 숨을 쉬세요.'}
 
 let records=[];
 try{records=JSON.parse(localStorage.getItem(SK)||'[]')}catch(e){records=[]}
 function save(){try{localStorage.setItem(SK,JSON.stringify(records.slice(0,100)))}catch(e){}}
+
+// 키워드 버튼 생성
+const allKeywords=[];
+for(const emotions of Object.values(EDICT))
+  for(const[name,data] of Object.entries(emotions))
+    data.keywords.forEach(k=>allKeywords.push({k,name}));
+
+const shown=allKeywords.sort(()=>Math.random()-.5).slice(0,16);
+const ka=document.getElementById('keyword-area');
+shown.forEach(({k,name})=>{
+  const b=document.createElement('button');
+  b.className='kbtn';b.textContent=k;
+  b.onclick=()=>{
+    document.querySelectorAll('.kbtn').forEach(x=>x.classList.remove('sel'));
+    b.classList.add('sel');
+    const sit=document.getElementById('situation');
+    sit.value=k;
+    startAnalysis();
+  };
+  ka.appendChild(b);
+});
 
 function showTab(t,btn){
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
@@ -224,145 +196,124 @@ function showTab(t,btn){
 }
 
 let cur=null;
-async function startAnalysis(){
-  const sit=document.getElementById('situation').value.trim();
-  if(!sit)return;
-  document.getElementById('abtn').disabled=true;
-  const area=document.getElementById('result-area');
-  area.innerHTML='<div class="loading"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>';
 
-  const emotionNames=[];
-  for(const emotions of Object.values(EDICT))
-    emotionNames.push(...Object.keys(emotions));
-
-  const prompt=`심리 전문가로서 아래 상황의 감정을 분석하세요.
-
-상황: "${sit}"
-
-사용할 감정 이름 목록: ${emotionNames.join(', ')}
-
-JSON만 응답하세요. 각 값은 짧고 간결하게(한 문장 이내):
-{"primary":"핵심감정","secondary":["감정2","감정3"],"hidden":"숨은감정","hidden_reason":"숨어있는이유","root_story":"뿌리이야기(2문장)","feel_permission":"수용허락(2문장)","unconscious_belief":"무의식믿음","unmet_need":["욕구1","욕구2","욕구3"],"reflection_questions":["질문1","질문2","질문3"],"action_steps":["행동1","행동2"],"self_care_message":"자신에게보내는말"}`;
-
-  function safeParseJSON(text){
-    const clean=text.replace(/```json|```/g,'').trim();
-    try{return JSON.parse(clean)}catch(e){}
-    // JSON이 잘린 경우 복구 시도
-    const start=clean.indexOf('{');
-    if(start===-1)throw new Error('응답에서 JSON을 찾을 수 없어요');
-    let s=clean.slice(start);
-    // 열린 괄호/배열 닫기
-    let depth=0,inStr=false,esc=false;
-    for(let i=0;i<s.length;i++){
-      const c=s[i];
-      if(esc){esc=false;continue}
-      if(c==='\\'){esc=true;continue}
-      if(c==='"')inStr=!inStr;
-      if(!inStr){if(c==='{'||c==='[')depth++;else if(c==='}'||c===']')depth--;}
+function analyzeText(text){
+  const t=text.toLowerCase();
+  const scores={};
+  for(const[cat,emotions] of Object.entries(EDICT)){
+    for(const[name,data] of Object.entries(emotions)){
+      let score=0;
+      data.keywords.forEach(k=>{if(t.includes(k))score+=3});
+      const words=['힘들','지쳐','아파','무서','걱정','슬퍼','화나','억울','외로','공허','무기력','불안','죄책','수치','번아웃'];
+      words.forEach(w=>{if(t.includes(w)&&name.includes(w.slice(0,2)))score+=1});
+      if(score>0)scores[name]=score;
     }
-    // 열린 문자열 닫기
-    if(inStr)s+='"';
-    // 열린 배열/객체 닫기
-    while(depth>0){s+=depth-->1?']':'}'}
-    // 마지막 쉼표 제거
-    s=s.replace(/,\s*([}\]])/g,'$1');
-    try{return JSON.parse(s)}catch(e2){throw new Error('JSON 복구 실패: 입력 내용이 너무 길 수 있어요. 조금 짧게 써보세요.')}
   }
-
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2500,messages:[{role:'user',content:prompt}]})
-    });
-    if(!res.ok){
-      const e=await res.json().catch(()=>({}));
-      throw new Error(e.error?.message||`API 오류 ${res.status}`);
-    }
-    const data=await res.json();
-    const text=data.content.map(i=>i.text||'').join('');
-    const r=safeParseJSON(text);
-    r.situation=sit;
-    r.date=new Date().toLocaleString('ko-KR');
-    cur=r;
-    renderResult(r,area);
-    records.unshift({...r});
-    if(records.length>100)records=records.slice(0,100);
-    save();
-  }catch(e){
-    area.innerHTML=`<div style="padding:16px;border:1px solid var(--red);border-radius:var(--r);color:var(--red);font-size:13px;line-height:1.8">
-      <strong>분석 중 오류가 발생했어요</strong><br>${e.message}
-    </div>`;
+  if(Object.keys(scores).length===0){
+    const defaults=['불안','번아웃','과부하','자기비판','외로움'];
+    const pick=defaults[Math.floor(Math.random()*defaults.length)];
+    scores[pick]=1;
   }
-  document.getElementById('abtn').disabled=false;
+  const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  const primary=sorted[0][0];
+  const secondary=sorted.slice(1,3).map(x=>x[0]);
+  const pd=gd(primary);
+  const hiddenMap={
+    '분노':'두려움','번아웃':'슬픔','자기비판':'수치심',
+    '과부하':'불안','억울함':'슬픔','공감피로':'외로움',
+    '슈퍼우먼증후군':'두려움','사명감소진':'공허함',
+    '무기력':'슬픔','불안':'두려움'
+  };
+  const hidden=hiddenMap[primary]||secondary[0]||'슬픔';
+  return{primary,secondary,hidden,data:pd};
 }
 
-function renderResult(r,area){
-  const color=gc(r.primary);
-  const ed=gd(r.primary);
-  const quote=gq(r.primary);
-  const med=gm(r.primary);
+function startAnalysis(){
+  const sit=document.getElementById('situation').value.trim();
+  if(!sit)return;
+  const area=document.getElementById('result-area');
+  const result=analyzeText(sit);
+  const pd=result.data;
+  if(!pd)return;
+  const color=gc(result.primary);
+  const quote=pd.quotes[Math.floor(Math.random()*pd.quotes.length)];
+  cur={...result,situation:sit,date:new Date().toLocaleString('ko-KR'),reflections:[]};
+
   area.innerHTML=`<div class="fade-in">
   <div class="card" style="border-left:3px solid ${color}">
     <div class="clabel">① 감정의 이름</div>
     <div class="ehead">
       <div class="edot" style="background:${color}"></div>
       <div>
-        <div class="ename">${r.primary}</div>
-        ${ed?`<div class="esub">${ed.root}</div>`:''}
+        <div class="ename">${result.primary}</div>
+        <div class="esub">${pd.root}</div>
       </div>
     </div>
-    ${r.secondary&&r.secondary.length?`<div>${r.secondary.map(e=>`<span class="tag">${e}</span>`).join('')}</div>`:''}
-    ${r.hidden?`<div style="margin-top:12px;padding:10px 14px;border-radius:8px;background:var(--s2)">
+    ${result.secondary.length?`<div>${result.secondary.map(e=>`<span class="tag">${e}</span>`).join('')}</div>`:''}
+    <div style="margin-top:12px;padding:10px 14px;border-radius:8px;background:var(--s2)">
       <span style="font-size:10px;color:var(--t3);letter-spacing:2px">숨어있는 감정 </span>
-      <strong style="color:var(--t)">${r.hidden}</strong>
-      ${r.hidden_reason?`<div style="font-size:12px;color:var(--t3);margin-top:4px">${r.hidden_reason}</div>`:''}
-    </div>`:''}
+      <strong style="color:var(--t)">${result.hidden}</strong>
+      <div style="font-size:12px;color:var(--t3);margin-top:4px">${result.primary} 아래에 ${result.hidden}이(가) 함께 있을 수 있어요</div>
+    </div>
   </div>
+
   <div class="card">
     <div class="clabel">② 감정의 뿌리 이야기</div>
-    <div class="ctext" style="color:var(--t);margin-bottom:12px">${r.root_story}</div>
-    ${r.unconscious_belief?`<div class="belief"><div class="belief-l">무의식적 믿음</div><div class="belief-t">"${r.unconscious_belief}"</div></div>`:''}
-    ${r.unmet_need&&r.unmet_need.length?`<div style="margin-top:10px"><div style="font-size:10px;color:var(--t3);margin-bottom:6px">충족되지 않은 욕구</div>${r.unmet_need.map(n=>`<span class="ntag">${n}</span>`).join('')}</div>`:''}
-    ${ed?`<div style="margin-top:10px"><div style="font-size:10px;color:var(--t3);margin-bottom:4px">몸에서 느껴지는 곳</div><div class="ctext">${ed.body}</div></div>`:''}
+    <div class="ctext" style="color:var(--t);margin-bottom:12px">${pd.root}. 지금 느끼는 이 감정은 자연스러운 반응이에요.</div>
+    <div class="belief">
+      <div class="belief-l">무의식적 믿음</div>
+      <div class="belief-t">"${pd.belief}"</div>
+    </div>
+    <div style="margin-top:10px">
+      <div style="font-size:10px;color:var(--t3);margin-bottom:6px">충족되지 않은 욕구</div>
+      ${pd.needs.map(n=>`<span class="ntag">${n}</span>`).join('')}
+    </div>
+    <div style="margin-top:10px">
+      <div style="font-size:10px;color:var(--t3);margin-bottom:4px">몸에서 느껴지는 곳</div>
+      <div class="ctext">${pd.body}</div>
+    </div>
   </div>
+
   <div class="card green">
     <div class="clabel">③ 있는 그대로 느껴보기 — 수용</div>
-    <div class="ctext" style="color:#8CC4A0;margin-bottom:12px">${r.feel_permission}</div>
+    <div class="ctext" style="color:#8CC4A0;margin-bottom:12px">이 감정을 느끼는 것은 잘못이 아니에요. 지금 이 감정이 당신 안에 있도록 허락해주세요. 판단 없이 그냥 함께 있어줘도 돼요.</div>
     <div class="quote" style="border-left-color:var(--green)">${quote}</div>
   </div>
+
   <div class="card">
     <div class="clabel">④ 중재 — 지금 할 수 있는 것</div>
-    <div class="ctext" style="margin-bottom:12px">${med}</div>
-    ${r.action_steps&&r.action_steps.length?r.action_steps.map((a,i)=>`
-    <div style="padding:10px 0;border-bottom:1px solid var(--bd);font-size:13px;color:var(--t);display:flex;gap:10px">
-      <span style="color:var(--t3);flex-shrink:0">${i+1}</span><span>${a}</span>
-    </div>`).join(''):''}
+    <div class="ctext" style="margin-bottom:12px">${pd.med}</div>
+    <div style="font-size:10px;color:var(--t3);margin-bottom:8px">지금 바로 할 수 있는 작은 행동</div>
+    <div style="padding:10px 0;border-bottom:1px solid var(--bd);font-size:13px;color:var(--t);display:flex;gap:10px"><span style="color:var(--t3);flex-shrink:0">1</span><span>숨을 깊게 세 번 쉬기 — 들이쉬고 4초, 내쉬고 6초</span></div>
+    <div style="padding:10px 0;border-bottom:1px solid var(--bd);font-size:13px;color:var(--t);display:flex;gap:10px"><span style="color:var(--t3);flex-shrink:0">2</span><span>지금 느끼는 감정을 한 문장으로 소리내어 말해보기</span></div>
+    <div style="padding:10px 0;font-size:13px;color:var(--t);display:flex;gap:10px"><span style="color:var(--t3);flex-shrink:0">3</span><span>${pd.med.split('.')[0]}</span></div>
   </div>
+
   <div class="card blue">
     <div class="clabel">⑤ 자신에게 보내는 말</div>
-    <div style="font-family:'Noto Serif KR',serif;font-size:16px;color:var(--blue);line-height:2">${r.self_care_message}</div>
+    <div style="font-family:'Noto Serif KR',serif;font-size:16px;color:var(--blue);line-height:2">${pd.care}</div>
   </div>
+
   <div class="card">
     <div class="clabel">성찰 질문 — 오늘 자신에게 물어보기</div>
-    ${r.reflection_questions?r.reflection_questions.map((q,i)=>`
+    ${pd.questions.map((q,i)=>`
     <div class="rq">Q${i+1}. ${q}</div>
     <textarea class="rta" rows="2" placeholder="자유롭게 써보세요..." id="rq-${i}"></textarea>
-    `).join(''):''}
+    `).join('')}
     <button class="btn-sm" style="margin-top:10px" onclick="saveRef()">성찰 답변 저장</button>
     <span id="smsg" style="font-size:12px;color:var(--green);margin-left:10px;display:none">저장됨 ✓</span>
   </div>
   </div>`;
+
+  records.unshift({...cur});
+  if(records.length>100)records=records.slice(0,100);
+  save();
 }
 
 function saveRef(){
   if(!cur)return;
   cur.reflections=[];
-  if(cur.reflection_questions)cur.reflection_questions.forEach((_,i)=>{
+  if(cur.data&&cur.data.questions)cur.data.questions.forEach((_,i)=>{
     const el=document.getElementById('rq-'+i);
     cur.reflections[i]=el?el.value:'';
   });
@@ -390,9 +341,9 @@ function renderRecords(){
       </div>
       <div class="ri-sit">${(r.situation||'').substring(0,60)}${(r.situation||'').length>60?'...':''}</div>
       <div class="ri-det" id="rd-${i}">
-        ${r.root_story?`<div style="font-size:13px;color:var(--t2);line-height:1.8;margin-bottom:10px">${r.root_story}</div>`:''}
-        ${r.unconscious_belief?`<div class="belief" style="margin-bottom:10px"><div class="belief-l">무의식적 믿음</div><div class="belief-t">"${r.unconscious_belief}"</div></div>`:''}
-        ${hr&&r.reflection_questions?r.reflection_questions.map((q,qi)=>r.reflections[qi]?`
+        ${r.data?`<div style="font-size:13px;color:var(--t2);line-height:1.8;margin-bottom:10px">${r.data.root}</div>`:''}
+        ${r.data?`<div class="belief" style="margin-bottom:10px"><div class="belief-l">무의식적 믿음</div><div class="belief-t">"${r.data.belief}"</div></div>`:''}
+        ${hr&&r.data&&r.data.questions?r.data.questions.map((q,qi)=>r.reflections[qi]?`
         <div style="margin:8px 0"><div style="font-size:11px;color:var(--t3);margin-bottom:3px">${q}</div>
         <div style="font-size:13px;color:var(--t);line-height:1.7">${r.reflections[qi]}</div></div>`:'').join(''):''}
         <button class="btn-sm btn-del" style="margin-top:10px" onclick="delRec(${i},event)">삭제</button>
@@ -414,16 +365,17 @@ function delRec(i,e){
 function renderDict(){
   const el=document.getElementById('dict-area');
   let h='';
-  for(const[cat,emotions]of Object.entries(EDICT)){
+  for(const[cat,emotions] of Object.entries(EDICT)){
     h+=`<div style="margin-bottom:1.5rem"><div class="slabel" style="margin-bottom:10px">${cat}</div><div class="dgrid">`;
-    for(const[name,data]of Object.entries(emotions)){
+    for(const[name,data] of Object.entries(emotions)){
       h+=`<div class="dc" style="border-left-color:${data.c}" onclick="this.classList.toggle('open')">
-        <div class="dn" style="color:var(--t)">${name}</div>
+        <div class="dn">${name}</div>
         <div class="dd">${data.root}</div>
         <div class="dx">
           <div style="font-size:11px;color:var(--t3);margin-bottom:6px">몸: ${data.body}</div>
+          <div style="font-size:11px;color:var(--purple);font-style:italic;margin-bottom:6px">"${data.belief}"</div>
           <div>${data.needs.map(n=>`<span class="ntag">${n}</span>`).join('')}</div>
-          ${QUOTES[name]?`<div class="quote" style="font-size:13px;margin-top:8px">${QUOTES[name][0]}</div>`:''}
+          <div class="quote" style="font-size:12px;margin-top:8px">${data.quotes[0]}</div>
         </div>
       </div>`;
     }
@@ -441,8 +393,7 @@ function renderInsight(){
   const cnt={},bmap={};
   records.forEach(r=>{
     if(r.primary)cnt[r.primary]=(cnt[r.primary]||0)+1;
-    if(r.hidden)cnt[r.hidden]=(cnt[r.hidden]||0)+0.5;
-    if(r.unconscious_belief){const b=r.unconscious_belief.trim();bmap[b]=(bmap[b]||0)+1}
+    if(r.data&&r.data.belief){const b=r.data.belief.trim();bmap[b]=(bmap[b]||0)+1}
   });
   const sorted=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,6);
   const mx=sorted[0]?sorted[0][1]:1;
@@ -474,7 +425,7 @@ function renderInsight(){
   }
   h+=`<div style="margin-top:16px;padding:14px;border:1px dashed var(--bd);border-radius:var(--r)">
     <div style="font-size:11px;color:var(--t3);margin-bottom:8px">데이터 관리</div>
-    <button class="btn-sm" onclick="exportData()">기록 내보내기 (JSON)</button>
+    <button class="btn-sm" onclick="exportData()">기록 내보내기</button>
     <button class="btn-sm btn-del" style="margin-left:8px" onclick="clearAll()">전체 삭제</button>
   </div>`;
   el.innerHTML=h;
@@ -488,7 +439,7 @@ function exportData(){
   a.click();URL.revokeObjectURL(u);
 }
 function clearAll(){
-  if(!confirm('모든 기록을 삭제할까요? 되돌릴 수 없습니다.'))return;
+  if(!confirm('모든 기록을 삭제할까요?'))return;
   records=[];save();renderInsight();
 }
 </script>
